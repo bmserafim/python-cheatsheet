@@ -1,0 +1,433 @@
+# getting xlsx format, allocating data in dataframe
+data = r"G:\My Drive\Data_Science_Analysis\Hashtag Treinamentos\Aula 4 - Jornada do Excel\Arquivo_Fonte.xlsx"
+df1 = pd.read_excel(data, 'Sheet1')
+df2 = pd.read_excel(data, 'Sheet2')
+or just
+df = pd.read_excel(data) # uses first sheet
+
+# importing warnings filter
+from warnings import simplefilter
+simplefilter(action='ignore', category=FutureWarning)
+
+# loading data from a text file, with missing values handled as specified
+np.gen'fromtxt()
+
+# defining Lambda function, applying it to each row
+lbda = lambda row: 'vegan' if row.shoe_material != 'leather' else 'animal'
+orders['shoe_source'] = orders.apply(lbda, axis = 1)
+
+data_filtered_lambda = lambda x: all(word in x for word in lst)  //it receives x and returns True or False
+data_filtered = data[data['question'].apply(data_filtered_lambda)] //if the result of applying lambda to 'question' column is true: ...
+
+#  takes two (or more) lists as inputs and returns an object that groups each respective elements together in a tuple
+zip(list_a, list_b)
+
+# displays a list as a string where each element is separated by a comma
+', '.join(my_list)
+
+data['question_clean'] = data['question'].apply(lambda x: BeautifulSoup(x, "html.parser").get_text())
+
+data2 = data.reindex(columns= ['show_number', 'air_date', 'round', 'category', 'value', 'clean_value', 'question', 'answer'])
+
+# changing single or multiple columns data types
+data['clean_value'] = pd.to_numeric(data['clean_value'], downcast='float')
+
+df[['A', 'B', 'C']] = df[['A', 'B', 'C']].apply(pd.to_numeric, axis = 1)
+
+auto['city-mpg'] = auto['city-mpg'].astype('float')
+
+data['datetime'] = pd.to_datetime(data.air_date)
+
+
+restaurants.columns = map(str.lower, restaurants.columns)
+
+restaurants = restaurants.rename({'dba': 'name', 'cuisine description': 'cuisine'}, axis=1, inplace=)
+
+df['column'].isnull()
+
+# checks if a specific value is a NAN
+pd.isna(df['colour'][1])
+
+print(diabetes_data[diabetes_data.isnull().any(axis=1)])// it shows all rows that contain a null value in it
+
+# counts the number of null (NaN) values per row
+df['Imputed'] = df.isnull().sum(axis=1)
+
+students = students.fillna(value={'score': 0})
+
+# fills missing numeric values (NaN) with the columns mean
+df['Salary'].fillna(df['Salary'].mean(), inplace=True)
+
+# counts the number of missing values in each column 
+restaurants.isna().sum()
+
+# returns the indices of elements in an input array where the given condition is satisfied
+restaurants['latitude'] = restaurants['latitude'].where(restaurants['latitude'] > 40, np.nan) 
+
+# .str.lstrip('https://') removes the “https://” from the left side of the string
+restaurants['url'] = restaurants['url'].str.lstrip('https://')
+
+import glob
+files = glob.glob("file*.csv")//This code goes through any file that starts with 'file' and has an extension of .csv
+
+# unpivot a DataFrame from wide to long format, optionally leaving identifiers set
+pd.melt(frame=df, id_vars="name", value_vars=["Checking","Savings"], value_name="Amount", var_name="Account Type")
+
+fruits = fruits.drop_duplicates(subset=['item'])
+bill_df = bill_df.dropna(subset=['num_guests'])//drops entire rows that have a NaN in the 'num_guests' column only
+
+df.drop(['column'], axis=1, inplace=True)
+
+# Create the 'str_split' column
+df['str_split'] = df.type.str.split('_')
+# Create the 'usertype' column
+df['usertype'] = df.str_split.str.get(0)
+
+split_df = df['exerciseDescription'].str.split('(\d+)', expand=True)//to split a string separating the digits. This way, creates a dataFrame.
+
+orders['month'] = orders.date.apply(lambda x: x.split('-')[0])
+
+# extracts whatever is between '-' and ',' in the Endereço column
+df['Cidade'] = df['Endereço'].apply(lambda x: re.search('-\s(.+),', x).group(1))
+
+print(df.dtypes)//To see the types of each column of a DataFrame
+
+# replaces '0' for NaN in single, and multiple columns
+students['score'] = students.score.replace('[\%]', '', regex=True)
+diabetes_data[['Glucose','BloodPressure','SkinThickness']] = diabetes_data[['Glucose','BloodPressure','SkinThickness']].replace(0,np.NaN)
+
+flips = np.random.choice(['heads', 'tails'], size=10, p=[0.5, 0.5])
+
+# extracting string parts using Regex
+sep = country["Country_Feature"].str.extract(r"([A-Z])([a-z])")
+
+data_tidy.groupby(by = "Name")
+cuisine_counts = restaurants.groupby(['cuisine']).name.nunique().reset_index()// it counts how many restaurants (name) are included in each cuisine category, and returns a dataframe
+
+data_tidy = data.pivot(index="participant",
+                         columns="attribute",
+                         values="value").reset_index()
+
+# ways of string formatting
+print('The log rate of return is {}%'.format(number)
+print(f'The log rate of return is {number}%')// variable number needs to be defined beforehand
+
+# shifts all rows down by 1
+dataframe.shift(1)
+df['growth'] = df['COL'] - df['COL'].shift(1)
+
+# uses fred API to colect data about APUS12A74714 symbol, between dates
+import pandas_datareader.data as web
+web.DataReader('APUS12A74714', 'fred', datetime(2008, 1, 1), datetime(2018, 1, 1)
+
+movies['rating'] = pd.Categorical(movies['rating'], ['G', 'PG', 'PG-13', 'R','UNRATED', 'NOT RATED'], ordered=True)
+
+clothes['rating_codes'] = clothes['Rating'].cat.codes
+
+median_index = np.median(df['education'].cat.codes)
+median_category = correct_order[int(median_index)]
+
+cereal = pd.get_dummies(data=cereal, columns=['mfr'])
+
+
+plt.scatter(the_women_column, the_income_column) 
+or
+df.plot.scatter(col1_x, col2_y)
+
+# plotting a LOWESS (Locally Weighted Scatterplot Smoothing) smoother over our data points. 
+  This will draw a line through the approximate average price for each value of sqfeet:
+sns.lmplot(x='sqfeet', y='price', data = housing_sub, line_kws={'color': 'black'}, lowess=True)
+
+np.histogram(exercise_ages, range = (20, 70), bins = 5)
+
+dados['g-0'].hist(bins = 100)
+
+plt.hist(author_ages, range=(10, 80), bins=14,  edgecolor='black')
+plt.title("Age of Top 100 Authors at Publication", y = 1.05)
+plt.xlabel("Age")
+plt.ylabel("Count")
+plt.savefig('graph name.png')
+plt.show()
+
+sns.kdeplot(dataset1, shade=True)
+
+################################################
+plt.figure(1)
+plt.subplot(211)////////////////////////////////////////args=(rows, columns, graph number)
+plt.hist(flights, range=(0,365), bins=365)
+plt.xlabel("day of the year", labelpad = 10)
+plt.ylabel("number of flights", labelpad = 10)
+
+plt.subplot(212)
+plt.ylabel("blooms per day", labelpad = 10)
+plt.hist(in_bloom, rangfe=(0,365), bins=365)//
+plt.xlim([-400,400])
+
+plt.subplots_adjust(left=0.125, right= 0.9, top=0.9, bottom=0.1, hspace=0.2, wspace= 0.2)
+plt.legend(['list of legends'])//args:(title=)
+plt.show()
+#################################################
+
+plt.tight_layout()
+
+
+x_values = range(10)
+y_values = [10, 12, 13, 13, 15, 19, 20, 22, 23, 29]
+y_lower = [i - error for i in y_values]
+y_upper = [i + error for i in y_values]
+plt.fill_between(x_values, y_lower, y_upper, alpha=0.2) #this is the shaded error
+plt.plot(x_values, y_values, color='red', marker='s', linestyle='--')
+plt.axis([x_min, x_max, y_min, y_max])
+plt.xlabel('Label', labelpad = 10)
+plt.ylabel('Label', labelpad = 10)
+plt.title('Title', y = 1.05)
+plt.show()
+
+########
+ax = plt.subplot()
+ax.set_xticks(months)
+ax.set_xticklabels(month_names)
+ax.set_yticks([0.10, 0.25, 0.5, 0.75])
+ax.set_yticklabels(['10%', '25%', '50%', '75%'])
+plt.show()
+########
+
+plt.hist(high_gdp["Life Expectancy"], alpha = 0.5, label = "High GDP")
+plt.hist(low_gdp["Life Expectancy"], alpha = 0.5, label = "Low GDP")
+plt.legend()
+plt.show()
+
+
+Center
+Spread
+Skew (left/right/no-skew)
+Modality (uni/bi/multimodal)
+Outliers
+
+#Let’s see how skewed our data is now:
+print(df.column1.skew())
+
+# shifts all rows down by 1
+dataframe.shift(1);
+
+from scipy import stats
+example_mode = stats.mode(example_array)
+
+songs_q1 = np.quantile(songs, 0.25)
+
+#Variance: The average of the squared distance from each data point to the mean.
+variance = np.var(dataset)
+
+#Standard Deviation (SD): The square root of the variance.
+standard_deviation = np.std()
+
+#The interquartile range (IQR) is the difference between the third quartile (Q3) and the first quartile (Q1)
+
+From scipy.stats import iqr
+interquartile_range = iqr(songs)
+
+# Generates a coefficient matrix that displays the correlation between all pairs of datasets in a list
+corrcoef_matrix = np.corrcoef([returns_general_motors, returns_ford, returns_exxon_mobil, returns_apple])
+
+plt.boxplot([two_thousand, two_thousand_one, two_thousand_two], labels = ["2000 Songs", "2001 Songs", "2002 Songs"])
+
+#for two box plots side by side, in the same chart
+sns.boxplot(data = df, x = 'school', y = 'G3')
+plt.show()
+
+sns.violinplot(data=df, x="label", y="value")
+
+#############################
+sns.set_style('whitegrid')
+sns.set_context('poster', font_scale=0.5)
+f, ax = plt.subplots(figsize=(12,7))
+ax = sns.barplot(data=df, x='Year', y='Total Goals', order=order_list)
+ax.set_title('Goals per World Cup edition')
+plt.show()
+
+sns.set_style('whitegrid')
+sns.palplot(sns.color_palette("Spectral", 10))
+f, ax2 = plt.subplots(figsize=(12,7))
+ax2 = sns.boxplot(data=df_goals, x='year', y='goals')
+ax2.set_title('gg')
+plt.xticks(rotation=30)
+plt.show()
+
+import matplotlib.patches as mpatches
+
+plt.figure(figsize=(12,10))
+sns.set_style('whitegrid', {"grid.color": ".95"})
+sns.set_context('poster', font_scale=0.8)
+sns.barplot(data=df_no, x='Year', y='count(*)', color='lightblue')
+sns.barplot(data=df_yes, x='Year', y='count(*)', color='darkblue')
+plt.title('Complaints Disputed by Consumers Over Time', fontsize=24, pad=30)
+plt.xlabel('')
+plt.ylabel('')
+top_bar = mpatches.Patch(color='lightblue', label='No')
+bottom_bar = mpatches.Patch(color='darkblue', label='Yes')
+plt.legend(handles=[top_bar, bottom_bar], title='Consumer disputed?')
+plt.tight_layout()
+#############################
+
+import seaborn as sns
+sns.countplot(df["Grade Level"], order=["First Year", "Second Year", "Third Year", "Fourth Year"])
+plt.xticks(rotation=30)
+plt.xlabel('column_name', fontsize=12, labelpad = 10)
+plt.show()
+
+plt.pie(df['column'], labels=df['column with labels'], autopct='%0.1f%%') //labels just needs to be a list.
+or
+dados['tratamento'].value_counts().plot.pie()
+plt.axis('equal') // it makes it a perfect circles
+plt.title('Distribution of House Water Usage', y = 1.05)
+plt.show()
+
+#plotting bar charts (mean values) with seaborn - It will aggregate grades by student, and plot the average grade for each student.
+sns.barplot(data=df, x="student", y="grade")///args(estimator=np.median or len, hue = 'Gender, order=order_list)
+
+
+#plotting bar charts
+plt.bar(x_values1, y_values)//args: (yerr=['list of errors'], capsize=10)
+or
+dados['tratamento'].value_counts().plot.bar()
+
+#plotting side-by-side bars
+n = ?  # This is our first dataset (out of t)
+t = ? # Number of datasets
+d = ? # Number of sets of bars
+w = 0.8 # Width of each bar
+x_values = [t*element + w*n for element in range(d)]
+plt.bar(x_values, y_values1)
+plt.bar(x_values, y_values2)//args: (bottom=x_values1)
+
+Standardization involves subtracting the mean of each observation and then dividing by the standard deviation: //better to be used with outliers
+z = (value - mean)/stdev
+
+
+from sklearn.preprocessing import MinMaxScaler
+# normalize data 
+scaler = MinMaxScaler()
+normalized_data = scaler.fit_transform(data)
+
+# standardize data
+scaler = StandardScaler()
+standardized_data = scaler.fit_transform(data)
+
+# Create new binned_age column that bins the values of the ‘Age’ column
+dance_class['binned_age'] = pd.cut(dance_class['Age'], bins)
+
+# log transform/////////////////better to be used with skewed data, before modeling
+log_data = np.log(data)
+
+from sklearn.preprocessing import PowerTransformer
+# log transform 
+log_transform = PowerTransformer()
+log_transform.fit_transform(data)
+
+mask = election_data.isin(votes[votes < 200].index)
+election_data[mask] = 'Other'
+
+sns.distplot(home_prices)
+
+##### To reduce left skewness, you might look at a technique such as square transformation, which involves converting x to x^2.
+##### To reduce right skewness, cube root transformation, converting x to x^3.
+
+
+######################################################################################
+# calculate covariance matrix:
+cov_mat_sqfeet_beds = np.cov(housing.sqfeet, housing.beds)
+
+# calculate the correlation for `hours_sleep` and `performance`:
+corr_sleep_performance = sleep['hours_sleep'].corr(sleep.performance)
+
+# calculate slope, intercept, rvalue (corr), pvalue, stderr, intercept_stderr
+from scipy.stats import linregress
+linregress(x_values, y_values)
+
+#To assess whether there is an association between these two variables (as frequencies)
+contigency_table = pd.crosstab(df.column1, df.column2)
+
+#To assess whether there is an association between these two variables (as proportions)
+contigency_table_proportions = contigency_table / len(df)
+
+###An important tool to help determine if two variables are associated, is to run:
+from scipy.stats import chi2_contingency
+chi2, pval, dof, expected = chi2_contingency(influence_leader_freq)
+print(expected) /// or print(chi2)
+
+###...and then compare with crosstab (as proportions) - look code above:
+print(contigency_table_proportions)
+###...the bigger the values difference between np.round(expected) and contigency_table_proportions, THE MORE ASSOCIATED THE VARIABLES ARE. 
+###or simply use chi2 (look above) to measure how associated they are
+
+#To calcule the standard deviation (STD)
+std_dev = np.std(my_sample)
+or
+std_dev = my_sample.std()
+
+######################################################################################
+
+#determine the way floating point numbers, arrays and other NumPy objects are displayed.
+np.set_printoptions(suppress=True, precision = 2)
+
+#performs a one-sample t-test. uses your sample distribution to determine the sample size and estimate the amount of variation 
+ in the population — which are used to estimate the null distribution. It returns two outputs: the t-statistic, and the p-value.
+ Ideally, data should be not-skew, unimodal, without ouliers to be studied via this test.
+
+from scipy.stats import ttest_1samp
+tstat, pval = ttest_1samp(sample_distribution, expected_mean)
+
+#We can use the np.percentile() function to calculate a 95% interval as follows:
+np.percentile(outcomes, [2.5,97.5])
+
+#Calculates p-value from a list (null_outcomes) containing results of purchases ('y' or 'n')
+null_outcomes = np.array(null_outcomes)
+p_value = np.sum(null_outcomes <= 41)/len(null_outcomes)
+
+#The default alternative hypothesis for the binom_test() function is two-sided, but this can be 
+ changed using the alternative parameter (eg., alternative = 'less' will run a one-sided lower tail test).
+p_value2 = binom_test(45, 500, .1, alternative = 'less')
+
+In some circumstances, we might instead care about an association between a quantitative variable and a non-binary 
+categorical variable (non-binary means more than two categories).
+
+#2-Sample T-Test
+tstat, a_b_pval = ttest_ind(a, b)
+
+#binomial test
+from scipy.stats import binom_test
+pval = binom_test(observed_successes, sample_size, expected_probability_of_success, alternative = 'greater')
+
+#ANOVA test
+from scipy.stats import f_oneway
+Fstat, pval = f_oneway(___, ___, ___)
+
+# Subset to just whippets, terriers, and pitbulls
+dogs_wtp = dogs[dogs.breed.isin(['whippet', 'terrier', 'pitbull'])]
+
+# Run Tukey's Range Test
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+output = pairwise_tukeyhsd(dogs_wtp.weight, dogs_wtp.breed)
+
+#Changing y_axis to percentage value, supressing the decimals
+tick = mtick.StrMethodFormatter('{x:,.0f}%')
+ax.yaxis.set_major_formatter(tick)
+
+# Define the colormap which maps the data values to the color space defined with the diverging_palette method  
+colors = sns.diverging_palette(150, 275, s=80, l=55, n=9, as_cmap=True)
+ 
+# Create heatmap using the .corr method on df, set colormap to cmap
+sns.heatmap(rentals.corr(), center=0, cmap=colors, robust=True)
+plt.show()
+
+################################### 3D ScatterPlot
+# import library
+import plotly.express as px
+ 
+# load in iris data
+df = px.data.iris()
+ 
+# create 3D scatter plot
+fig = px.scatter_3d(df, x='sepal_length', y='sepal_width', z='petal_width', color='species')
+fig.show()
+##################################
